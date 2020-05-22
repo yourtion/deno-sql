@@ -21,9 +21,9 @@ const CHARS_ESCAPE_MAP = {
 export default class SqlString {
   static escapeId(val: any, forbidQualified?: boolean): string {
     if (Array.isArray(val)) {
-      var sql = "";
+      let sql = "";
 
-      for (var i = 0; i < val.length; i++) {
+      for (let i = 0; i < val.length; i++) {
         sql += (i === 0 ? "" : ", ") + this.escapeId(val[i], forbidQualified);
       }
 
@@ -69,14 +69,15 @@ export default class SqlString {
   }
 
   static arrayToList(array: any[], timeZone?: string) {
-    var sql = "";
+    let sql = "";
 
-    for (var i = 0; i < array.length; i++) {
-      var val = array[i];
+    for (let i = 0; i < array.length; i++) {
+      const val = array[i];
 
       if (Array.isArray(val)) {
-        sql += (i === 0 ? "" : ", ") + "(" + this.arrayToList(val, timeZone) +
-          ")";
+        sql += `${(sql.length === 0 ? "" : ", ")}(${
+          this.arrayToList(val, timeZone)
+        })`;
       } else {
         sql += (i === 0 ? "" : ", ") + this.escape(val, true, timeZone);
       }
@@ -135,19 +136,19 @@ export default class SqlString {
   }
 
   static dateToString(date: string | number | Date, timeZone: string) {
-    var dt = new Date(date);
+    const dt = new Date(date);
 
     if (isNaN(dt.getTime())) {
       return "NULL";
     }
 
-    var year;
-    var month;
-    var day;
-    var hour;
-    var minute;
-    var second;
-    var millisecond;
+    let year;
+    let month;
+    let day;
+    let hour;
+    let minute;
+    let second;
+    let millisecond;
 
     if (timeZone === "local") {
       year = dt.getFullYear();
@@ -158,7 +159,7 @@ export default class SqlString {
       second = dt.getSeconds();
       millisecond = dt.getMilliseconds();
     } else {
-      var tz = convertTimezone(timeZone);
+      const tz = convertTimezone(timeZone);
 
       if (tz !== false && tz !== 0) {
         dt.setTime(dt.getTime() + tz * 60000);
@@ -174,7 +175,7 @@ export default class SqlString {
     }
 
     // YYYY-MM-DD HH:mm:ss.mmm
-    var str = zeroPad(year, 4) +
+    const str = zeroPad(year, 4) +
       "-" +
       zeroPad(month, 2) +
       "-" +
@@ -192,19 +193,18 @@ export default class SqlString {
   }
 
   static objectToValues(object: Record<string, any>, timeZone?: string) {
-    var sql = "";
+    let sql = "";
 
-    for (var key in object) {
-      var val = object[key];
+    for (const key in object) {
+      const val = object[key];
 
       if (typeof val === "function") {
         continue;
       }
 
-      sql += (sql.length === 0 ? "" : ", ") +
-        this.escapeId(key) +
-        " = " +
-        this.escape(val, true, timeZone);
+      sql += `${(sql.length === 0 ? "" : ", ")}${this.escapeId(key)} = ${
+        this.escape(val, true, timeZone)
+      }`;
     }
 
     return sql;
@@ -224,9 +224,9 @@ export default class SqlString {
 }
 
 function escapeString(val: string) {
-  var chunkIndex = (CHARS_GLOBAL_REGEXP.lastIndex = 0);
-  var escapedVal = "";
-  var match;
+  let chunkIndex = (CHARS_GLOBAL_REGEXP.lastIndex = 0);
+  let escapedVal = "";
+  let match;
 
   while ((match = CHARS_GLOBAL_REGEXP.exec(val))) {
     escapedVal += val.slice(chunkIndex, match.index) +
@@ -236,14 +236,14 @@ function escapeString(val: string) {
 
   if (chunkIndex === 0) {
     // Nothing was escaped
-    return "'" + val + "'";
+    return `'${val}'`;
   }
 
   if (chunkIndex < val.length) {
-    return "'" + escapedVal + val.slice(chunkIndex) + "'";
+    return `'${escapedVal}${val.slice(chunkIndex)}'`;
   }
 
-  return "'" + escapedVal + "'";
+  return `'${escapedVal}'`;
 }
 
 function zeroPad(num: number, length: number) {
@@ -260,7 +260,7 @@ function convertTimezone(tz: string) {
     return 0;
   }
 
-  var m = tz.match(/([\+\-\s])(\d\d):?(\d\d)?/);
+  const m = tz.match(/([\+\-\s])(\d\d):?(\d\d)?/);
   if (m) {
     return (
       (m[1] === "-" ? -1 : 1) *

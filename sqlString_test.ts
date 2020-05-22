@@ -16,9 +16,7 @@ test("SqlString escapeId - value can be an object", () => {
 test("SqlString escapeId - value toString is called", () => {
   assertStrictEq(
     SqlString.escapeId({
-      toString: () => {
-        return "foo";
-      },
+      toString: () => "foo",
     }),
     "`foo`",
   );
@@ -27,9 +25,7 @@ test("SqlString escapeId - value toString is called", () => {
 test("SqlString escapeId - value toString is quoted", () => {
   assertStrictEq(
     SqlString.escapeId({
-      toString: () => {
-        return "f`oo";
-      },
+      toString: () => "f`oo",
     }),
     "`f``oo`",
   );
@@ -95,9 +91,7 @@ test("SqlString escape - object values toSqlString is called", () => {
   assertStrictEq(
     SqlString.escape({
       id: {
-        toSqlString: () => {
-          return "LAST_INSERT_ID()";
-        },
+        toSqlString: () => "LAST_INSERT_ID()",
       },
     }),
     "`id` = LAST_INSERT_ID()",
@@ -107,9 +101,7 @@ test("SqlString escape - object values toSqlString is called", () => {
 test("SqlString escape - objects toSqlString is called", () => {
   assertStrictEq(
     SqlString.escape({
-      toSqlString: () => {
-        return "@foo_id";
-      },
+      toSqlString: () => "@foo_id",
     }),
     "@foo_id",
   );
@@ -118,9 +110,7 @@ test("SqlString escape - objects toSqlString is called", () => {
 test("SqlString escape - objects toSqlString is not quoted", () => {
   assertStrictEq(
     SqlString.escape({
-      toSqlString: () => {
-        return "CURRENT_TIMESTAMP()";
-      },
+      toSqlString: () => "CURRENT_TIMESTAMP()",
     }),
     "CURRENT_TIMESTAMP()",
   );
@@ -137,9 +127,7 @@ test("SqlString escape - nested objects use toString", () => {
   assertStrictEq(
     SqlString.escape({
       a: {
-        toString: () => {
-          return "foo";
-        },
+        toString: () => "foo",
       },
     }),
     "`a` = 'foo'",
@@ -150,9 +138,7 @@ test("SqlString escape - nested objects use toString is quoted", () => {
   assertStrictEq(
     SqlString.escape({
       a: {
-        toString: () => {
-          return "f'oo";
-        },
+        toString: () => "f'oo",
       },
     }),
     "`a` = 'f\\'oo'",
@@ -185,11 +171,7 @@ test("SqlString escape - nested objects inside arrays use toString", () => {
   assertStrictEq(
     SqlString.escape([
       1,
-      {
-        toString: () => {
-          return "foo";
-        },
-      },
+      { toString: () => "foo" },
       2,
     ]),
     "1, 'foo', 2",
@@ -371,9 +353,7 @@ test("SqlString format - objects is not converted to values", () => {
   var sql = SqlString.format(
     "?",
     {
-      toString: () => {
-        return "hello";
-      },
+      toString: () => "hello",
     },
     true,
   );
@@ -382,9 +362,7 @@ test("SqlString format - objects is not converted to values", () => {
   var sql = SqlString.format(
     "?",
     {
-      toSqlString: () => {
-        return "@foo";
-      },
+      toSqlString: () => "@foo",
     },
     true,
   );
@@ -411,11 +389,11 @@ test("SqlString raw - rejects number", () => {
   });
 });
 
-// test("SqlString raw - rejects undefined", () =>{
-//   assert.throws () =>{
-//     SqlString.raw();
-//   });
-// });
+test("SqlString raw - rejects undefined", () => {
+  assertThrows(() => {
+    (SqlString as any).raw();
+  });
+});
 
 test("SqlString raw - object has toSqlString", () => {
   assertStrictEq(typeof SqlString.raw("NOW()").toSqlString, "function");
