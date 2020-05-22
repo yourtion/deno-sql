@@ -3,6 +3,7 @@
 export const test = Deno.test;
 
 export {
+  AssertionError,
   assert,
   assertEquals,
   assertStrictEq,
