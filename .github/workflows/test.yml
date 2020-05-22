@@ -7,11 +7,8 @@ jobs:
     name: deno-sql tests
     runs-on: ubuntu-latest
     steps:
-      - name: clone repository
-        uses: actions/checkout@v2
-
-      - name: run tests
-        run: |
-          curl -L https://deno.land/x/install/install.sh | sh -s "v1.0.1"
-          export PATH="$HOME/.deno/bin:$PATH"
-          deno test
+      - uses: actions/checkout@master
+      - uses: denolib/setup-deno@master
+        with:
+          deno-version: v1.x
+      - run: deno test
