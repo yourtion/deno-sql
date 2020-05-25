@@ -1,5 +1,8 @@
 import { Client } from "https://deno.land/x/mysql/mod.ts";
-import { table, query } from "https://raw.githubusercontent.com/yourtion/deno-sql/master/mod.ts";
+import {
+  table,
+  query,
+} from "https://deno.land/x/sql/mod.ts";
 
 // CREATE DATABASE `test` DEFAULT CHARACTER SET = `utf8mb4` DEFAULT COLLATE = `utf8mb4_general_ci`;
 // CREATE TABLE `test`.`test` (`id` serial,`a` int,`b` int, PRIMARY KEY (id));
@@ -32,6 +35,6 @@ console.log(data);
 const data2 = await query(
   client,
   table("test").select("*").limit(1),
-)
+);
 console.log(data2);
 // deno run --allow-net mysql.ts

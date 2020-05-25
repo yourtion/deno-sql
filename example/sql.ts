@@ -1,4 +1,7 @@
-import { table, expr } from "https://raw.githubusercontent.com/yourtion/deno-sql/master/mod.ts";
+import {
+  table,
+  expr,
+} from "https://deno.land/x/sql/mod.ts";
 
 let sql;
 

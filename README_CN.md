@@ -1,3 +1,5 @@
+![CI](https://github.com/yourtion/deno-sql/workflows/Deno-SQL-CI/badge.svg?branch=master)
+
 # deno-sql
 
 SQL 查询构造器（根据 @leizm/sql 改造）
@@ -6,7 +8,7 @@ SQL 查询构造器（根据 @leizm/sql 改造）
 
 ```typescript
 import { table, expr, query } from "https://deno.land/x/mysql/mod.ts";
-import { table } from "https://raw.githubusercontent.com/yourtion/deno-sql/master/mod.ts";
+import { table } from "https://deno.land/x/sql/mod.ts";
 
 // 普通查询
 table("test")
@@ -145,7 +147,8 @@ console.log(data);
 ```text
 MIT License
 
-Copyright (c) 2018 Zongmin Lei <leizongmin@gmail.com>
+- Copyright (c) 2018 Zongmin Lei <leizongmin@gmail.com>
+- Copyright (c) 2020 Yourtion Guo <yourtion@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

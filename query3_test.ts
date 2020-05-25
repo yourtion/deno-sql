@@ -4,7 +4,7 @@ import {
   assertStrictEq,
 } from "./test_deps.ts";
 
-test("sub query1", () => {
+test("query sub query1", () => {
   const sql = Q.select("*")
     .from("test1")
     .where("a=? AND b IN ???", [
@@ -21,7 +21,7 @@ test("sub query1", () => {
     "SELECT * FROM `test1` WHERE a=123 AND b IN (SELECT `id` FROM `test2` WHERE `id`<10 LIMIT 100)",
   );
 });
-test("sub query2", () => {
+test("query sub query2", () => {
   const sql = Q.select("*")
     .from("test1")
     .where("a=:a AND b IN :::b", {
@@ -38,7 +38,7 @@ test("sub query2", () => {
     "SELECT * FROM `test1` WHERE a=123 AND b IN (SELECT `id` FROM `test2` WHERE `id`<10 LIMIT 100)",
   );
 });
-test("sub query3", () => {
+test("query sub query3", () => {
   const sql = Q.select("*")
     .from("test1")
     .where({
@@ -58,7 +58,7 @@ test("sub query3", () => {
   );
 });
 
-test("select - $raw", () => {
+test("query select - $raw", () => {
   const sql = Q.select("*")
     .from("test1")
     .where({
@@ -69,7 +69,7 @@ test("select - $raw", () => {
   //   utils.debug(sql);
   assertStrictEq(sql, "SELECT * FROM `test1` WHERE a > b AND `a`=123");
 });
-test("select - $raw", () => {
+test("query select - $raw", () => {
   const sql = Q.select("*")
     .from("test1")
     .where({
@@ -81,7 +81,7 @@ test("select - $raw", () => {
   assertStrictEq(sql, "SELECT * FROM `test1` WHERE a > b AND `a`=123");
 });
 
-test("clone", () => {
+test("query clone", () => {
   const q = Q.select("*").from("test1").where({ a: 123 });
 
   const sql1 = q.clone().where({ b: 456 }).offset(10).limit(20).build();
@@ -98,7 +98,7 @@ test("clone", () => {
   );
 });
 
-test("typings - select", () => {
+test("query typings - select", () => {
   const a = 1;
   const b = "b";
   const sql = Q.select<{
@@ -113,7 +113,7 @@ test("typings - select", () => {
   // utils.debug(sql);
   assertStrictEq(sql, "SELECT * FROM `test1` WHERE `a`=2 AND `b`<3 AND `b`=1");
 });
-test("typings - update", () => {
+test("query typings - update", () => {
   const a = 1;
   const b = "b";
   const sql = Q.update<{

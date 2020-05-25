@@ -1,11 +1,11 @@
 import Q from "./mod.ts";
 import { test, assertStrictEq } from "./test_deps.ts";
 
-test("static method - ", () => {
+test("query static method - select", () => {
   const sql = Q.select("a", "b").from("hello").where({ a: 1 }).build();
   assertStrictEq(sql, "SELECT `a`, `b` FROM `hello` WHERE `a`=1");
 });
-test("static method - ", () => {
+test("query static method - fields", () => {
   const sql = Q.select()
     .fields("a", "b")
     .table("hello")
@@ -13,11 +13,11 @@ test("static method - ", () => {
     .build();
   assertStrictEq(sql, "SELECT `a`, `b` FROM `hello` WHERE `a`=1");
 });
-test("static method - ", () => {
+test("query static method - insert", () => {
   const sql = Q.insert({ a: 123, b: 456 }).into("hello").build();
   assertStrictEq(sql, "INSERT INTO `hello` (`a`, `b`) VALUES (123, 456)");
 });
-test("static method - ", () => {
+test("query static method - insert into", () => {
   const sql = Q.insert([
     { a: 123, b: 456 },
     { a: 789, b: 111 },
@@ -29,7 +29,7 @@ test("static method - ", () => {
     "INSERT INTO `hello` (`a`, `b`) VALUES (123, 456),\n(789, 111)",
   );
 });
-test("static method - ", () => {
+test("query static method - update", () => {
   const sql = Q.update()
     .table("abc")
     .set({ a: 123, b: 456 })
@@ -37,12 +37,12 @@ test("static method - ", () => {
     .build();
   assertStrictEq(sql, "UPDATE `abc` SET `a`=123, `b`=456 WHERE `c`=789");
 });
-test("static method - ", () => {
+test("query static method - delete", () => {
   const sql = Q.delete().from("abc").where({ a: 666 }).limit(10).build();
   assertStrictEq(sql, "DELETE FROM `abc` WHERE `a`=666 LIMIT 10");
 });
 
-test("leftJoin - ", () => {
+test("query leftJoin - on", () => {
   const sql = Q.select("*")
     .from("hello")
     .as("A")
@@ -59,7 +59,7 @@ test("leftJoin - ", () => {
     "SELECT `A`.* FROM `hello` AS `A` LEFT JOIN `world` AS `B` ON A.id=B.id WHERE 1 AND 2 LIMIT 2,3",
   );
 });
-test("leftJoin - ", () => {
+test("query leftJoin - `A`.*, `B`.*", () => {
   const sql = Q.select("*")
     .from("hello")
     .as("A")
@@ -76,7 +76,7 @@ test("leftJoin - ", () => {
     "SELECT `A`.*, `B`.* FROM `hello` AS `A` LEFT JOIN `world` AS `B` ON A.id=B.id WHERE 1 AND 2 LIMIT 2,3",
   );
 });
-test("leftJoin - ", () => {
+test("query leftJoin - `B`.*", () => {
   const sql = Q.select()
     .from("hello")
     .as("A")
@@ -93,7 +93,7 @@ test("leftJoin - ", () => {
     "SELECT `B`.* FROM `hello` AS `A` LEFT JOIN `world` AS `B` ON A.id=B.id WHERE 1 AND 2 LIMIT 2,3",
   );
 });
-test("leftJoin - ", () => {
+test("query leftJoin - with field", () => {
   const sql = Q.select("x", "y")
     .from("hello")
     .as("A")
@@ -110,7 +110,7 @@ test("leftJoin - ", () => {
     "SELECT `A`.`x`, `A`.`y`, `B`.`z` FROM `hello` AS `A` LEFT JOIN `world` AS `B` ON A.id=B.id WHERE 1 AND 2 LIMIT 2,3",
   );
 });
-test("leftJoin - ", () => {
+test("query leftJoin - without as", () => {
   const sql = Q.select("x", "y")
     .from("hello")
     .leftJoin("world", ["z"])
@@ -126,7 +126,7 @@ test("leftJoin - ", () => {
   );
 });
 
-test("rightJoin - ", () => {
+test("query rightJoin - on", () => {
   const sql = Q.select("*")
     .from("hello")
     .as("A")
@@ -143,7 +143,7 @@ test("rightJoin - ", () => {
     "SELECT `A`.*, `B`.* FROM `hello` AS `A` RIGHT JOIN `world` AS `B` ON A.id=B.id WHERE 1 AND 2 LIMIT 2,3",
   );
 });
-test("rightJoin - ", () => {
+test("query rightJoin - as", () => {
   const sql = Q.select("x", "y")
     .from("hello")
     .as("A")
@@ -160,7 +160,7 @@ test("rightJoin - ", () => {
     "SELECT `A`.`x`, `A`.`y`, `B`.`z` FROM `hello` AS `A` RIGHT JOIN `world` AS `B` ON A.id=B.id WHERE 1 AND 2 LIMIT 2,3",
   );
 });
-test("rightJoin - ", () => {
+test("query rightJoin - without as", () => {
   const sql = Q.select("x", "y")
     .from("hello")
     .rightJoin("world", ["z"])
@@ -176,7 +176,7 @@ test("rightJoin - ", () => {
   );
 });
 
-test("join - ", () => {
+test("query join - `A`.*, `B`.*", () => {
   const sql = Q.select("*")
     .from("hello")
     .as("A")
@@ -193,7 +193,7 @@ test("join - ", () => {
     "SELECT `A`.*, `B`.* FROM `hello` AS `A` JOIN `world` AS `B` ON A.id=B.id WHERE 1 AND 2 LIMIT 2,3",
   );
 });
-test("join - ", () => {
+test("query join - as", () => {
   const sql = Q.select("x", "y")
     .from("hello")
     .as("A")
@@ -210,7 +210,7 @@ test("join - ", () => {
     "SELECT `A`.`x`, `A`.`y`, `B`.`z` FROM `hello` AS `A` JOIN `world` AS `B` ON A.id=B.id WHERE 1 AND 2 LIMIT 2,3",
   );
 });
-test("join - ", () => {
+test("query join - without as", () => {
   const sql = Q.select("x", "y")
     .from("hello")
     .join("world", ["z"])
@@ -225,7 +225,7 @@ test("join - ", () => {
     "SELECT `hello`.`x`, `hello`.`y`, `world`.`z` FROM `hello` JOIN `world` ON hello.id=world.id WHERE 1 AND 2 LIMIT 2,3",
   );
 });
-test("join - ", () => {
+test("query join - as tow table", () => {
   const sql = Q.select("x", "y")
     .from("hello")
     .as("A")
@@ -245,7 +245,7 @@ test("join - ", () => {
     "SELECT `A`.`x`, `A`.`y`, `B`.`z`, `C`.`k` FROM `hello` AS `A` LEFT JOIN `world` AS `B` ON A.id=B.id LEFT JOIN `world` AS `C` ON B.uid=C.id WHERE 1 AND 2 LIMIT 2,3",
   );
 });
-test("join - ", () => {
+test("query join - count()", () => {
   const sql = Q.select("x", "y", "count(y) AS c1")
     .from("hello")
     .as("A")

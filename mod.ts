@@ -17,7 +17,7 @@ export interface IConnection {
  */
 function query<T = any>(
   conn: IConnection,
-  q: QueryBuilder | string
+  q: QueryBuilder | string,
 ): Promise<T> {
   return conn.query(typeof q === "string" ? q : q.build());
 }

@@ -235,7 +235,7 @@ test("SqlString escape - dates are converted to YYYY-MM-DD HH:II:SS.sss", () => 
   assertStrictEq(string, "'" + expected + "'");
 });
 
-test('SqlString.escape - dates are converted to specified time zone "Z"', () => {
+test('SqlString escape - dates are converted to specified time zone "Z"', () => {
   var expected = "2012-05-07 11:42:03.002";
   var date = new Date(Date.UTC(2012, 4, 7, 11, 42, 3, 2));
   var string = SqlString.escape(date, false, "Z");
@@ -243,7 +243,7 @@ test('SqlString.escape - dates are converted to specified time zone "Z"', () => 
   assertStrictEq(string, "'" + expected + "'");
 });
 
-test('SqlString.escape - dates are converted to specified time zone "+01"', () => {
+test('SqlString escape - dates are converted to specified time zone "+01"', () => {
   var expected = "2012-05-07 12:42:03.002";
   var date = new Date(Date.UTC(2012, 4, 7, 11, 42, 3, 2));
   var string = SqlString.escape(date, false, "+01");
@@ -251,7 +251,7 @@ test('SqlString.escape - dates are converted to specified time zone "+01"', () =
   assertStrictEq(string, "'" + expected + "'");
 });
 
-test('SqlString.escape - dates are converted to specified time zone "+0200"', () => {
+test('SqlString escape - dates are converted to specified time zone "+0200"', () => {
   var expected = "2012-05-07 13:42:03.002";
   var date = new Date(Date.UTC(2012, 4, 7, 11, 42, 3, 2));
   var string = SqlString.escape(date, false, "+0200");
@@ -259,7 +259,7 @@ test('SqlString.escape - dates are converted to specified time zone "+0200"', ()
   assertStrictEq(string, "'" + expected + "'");
 });
 
-test('SqlString.escape - dates are converted to specified time zone "-05:00"', () => {
+test('SqlString escape - dates are converted to specified time zone "-05:00"', () => {
   var expected = "2012-05-07 06:42:03.002";
   var date = new Date(Date.UTC(2012, 4, 7, 11, 42, 3, 2));
   var string = SqlString.escape(date, false, "-05:00");
@@ -281,21 +281,6 @@ test("SqlString escape - invalid dates are converted to null", () => {
 
   assertStrictEq(string, "NULL");
 });
-
-//   test('SqlString.escape - buffers are converted to hex', function() {
-//     var buffer = new Buffer([0, 1, 254, 255]);
-//     var string = SqlString.escape(buffer);
-
-//     assertStrictEq(string, "X'0001feff'");
-//   });
-
-//   test('SqlString.escape - buffers object cannot inject SQL', function() {
-//     var buffer = new Buffer([0, 1, 254, 255]);
-//     buffer.toString = function() { return "00' OR '1'='1"; };
-//     var string = SqlString.escape(buffer);
-
-//     assertStrictEq(string, "X'00\\' OR \\'1\\'=\\'1'");
-//   });
 
 test("SqlString escape - NaN -> NaN", () => {
   assertStrictEq(SqlString.escape(NaN), "NaN");
